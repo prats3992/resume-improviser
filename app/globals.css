@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 180 20% 98%;
+    --foreground: 180 10% 10%;
+
+    --card: 180 20% 98%;
+    --card-foreground: 180 10% 10%;
+
+    --popover: 180 20% 98%;
+    --popover-foreground: 180 10% 10%;
+
+    --primary: 175 70% 41%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 180 16% 93%;
+    --secondary-foreground: 175 70% 30%;
+
+    --muted: 180 16% 93%;
+    --muted-foreground: 180 5% 40%;
+
+    --accent: 175 70% 97%;
+    --accent-foreground: 175 70% 30%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 180 16% 90%;
+    --input: 180 16% 90%;
+    --ring: 175 70% 41%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 180 25% 10%;
+    --foreground: 180 5% 95%;
+
+    --card: 180 25% 12%;
+    --card-foreground: 180 5% 95%;
+
+    --popover: 180 25% 12%;
+    --popover-foreground: 180 5% 95%;
+
+    --primary: 175 70% 41%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 180 25% 16%;
+    --secondary-foreground: 175 70% 80%;
+
+    --muted: 180 25% 16%;
+    --muted-foreground: 180 5% 65%;
+
+    --accent: 175 25% 16%;
+    --accent-foreground: 175 70% 80%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 180 25% 20%;
+    --input: 180 25% 20%;
+    --ring: 175 70% 41%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.chat-bubble-user {
+  @apply bg-primary text-primary-foreground rounded-2xl rounded-tr-none;
+}
+
+.chat-bubble-ai {
+  @apply bg-secondary text-secondary-foreground rounded-2xl rounded-tl-none;
+}
+
+.gradient-bg {
+  @apply bg-gradient-to-r from-teal-500 to-emerald-500;
+}
+
+/* Markdown styling */
+.prose {
+  @apply text-foreground;
+}
+
+.prose code {
+  @apply bg-muted px-1 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+  @apply bg-muted p-4 rounded-md my-4 overflow-x-auto;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply text-primary font-bold;
+}
+
+.prose h1 {
+  @apply text-2xl;
+}
+
+.prose h2 {
+  @apply text-xl;
+}
+
+.prose h3 {
+  @apply text-lg;
+}
+
+.prose p {
+  @apply my-2;
+}
+
+.prose ul,
+.prose ol {
+  @apply pl-6 my-2;
+}
+
+.prose ul {
+  @apply list-disc;
+}
+
+.prose ol {
+  @apply list-decimal;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-primary/30 pl-4 italic;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  @apply flex space-x-2 items-center;
+}
+
+.typing-indicator-dot {
+  @apply h-2 w-2 rounded-full bg-primary;
+}
+
+/* Sidebar resize handle */
+.resize-handle {
+  @apply absolute top-0 right-0 h-full w-1 cursor-ew-resize hover:bg-primary/50 z-10;
+}
+
+.resize-handle-icon {
+  @apply absolute top-1/2 right-0 -translate-y-1/2 p-0.5 bg-primary/20 rounded-sm;
+}
+
+/* Prevent text selection during resize */
+.resizing * {
+  @apply select-none;
+}
+
+.modal-scrollable {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) transparent;
+}
+
+.modal-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-scrollable::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 3px;
+}
