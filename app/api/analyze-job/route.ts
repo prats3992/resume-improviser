@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { generateText } from "ai"
 import { createGoogleGenerativeAI } from "@ai-sdk/google"
+import { extractAndParseJSON } from "@/lib/utils"
 
 // Initialize the Google Generative AI model with proper error handling
 const getGeminiModel = () => {
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
     `
 
     const { text } = await generateText({
-      model: googleAI("gemini-2.5-flash-preview-04-17"),
+      model: googleAI("gemini-2.5-flash"),
       prompt,
       system:
         "You are an expert resume analyst and job coach. Your task is to analyze job descriptions and compare them with candidate resumes to provide actionable insights.",
@@ -53,10 +54,7 @@ export async function POST(req: NextRequest) {
     // Parse the JSON response
     let result
     try {
-      // Extract JSON from the response if it's wrapped in markdown code blocks
-      const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/```\s*([\s\S]*?)\s*```/)
-      const jsonString = jsonMatch ? jsonMatch[1] : text
-      result = JSON.parse(jsonString)
+      result = extractAndParseJSON(text)
 
       // Ensure all required fields are present
       const requiredFields = [
@@ -75,6 +73,7 @@ export async function POST(req: NextRequest) {
       }
     } catch (error) {
       console.error("Error parsing JSON response:", error)
+      console.error("Raw AI response:", text)
       return NextResponse.json({ error: "Failed to parse analysis result" }, { status: 500 })
     }
 

@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { generateText } from "ai"
 import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { v4 as uuidv4 } from "uuid"
+import { extractAndParseJSON } from "@/lib/utils"
 
 // Initialize the Google Generative AI model with proper error handling
 const getGeminiModel = () => {
@@ -53,28 +54,17 @@ export async function POST(req: NextRequest) {
     `
 
     const { text } = await generateText({
-      model: googleAI("gemini-2.5-flash-preview-04-17"),
+      model: googleAI("gemini-2.5-flash"),
       prompt,
       system:
         "You are an expert interview coach specializing in behavioral interviews. Your task is to generate tailored STAR-based behavioral questions for job candidates. You MUST output strictly valid JSON.",
       maxTokens: 7000,
     })
 
-    console.log("Raw AI response text:", text); // Added logging
-
     // Parse the JSON response
     let questions
     try {
-      // Extract JSON from the response if it's wrapped in markdown code blocks (less likely with the updated prompt, but kept as a fallback)
-      const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/```\s*([\s\S]*?)\s*```/)
-      let jsonString = jsonMatch ? jsonMatch[1].trim() : text.trim() // Trim whitespace
-
-      // Attempt to remove potential trailing commas (simple approach)
-      jsonString = jsonString.replace(/,\s*([}\]])/g, '$1'); 
-      
-      console.log("Attempting to parse JSON string:", jsonString); // Added logging
-
-      questions = JSON.parse(jsonString)
+      questions = extractAndParseJSON(text)
 
       // Ensure each question has a unique ID
       questions = questions.map((q) => ({
@@ -83,7 +73,7 @@ export async function POST(req: NextRequest) {
       }))
     } catch (error) {
       console.error("Error parsing JSON response:", error)
-      console.error("Problematic JSON string:", text) // Log the original text on error
+      console.error("Raw AI response:", text)
       return NextResponse.json({ error: "Failed to parse questions from AI response" }, { status: 500 })
     }
 

@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const googleAI = getGeminiModel()
 
     const { text } = await generateText({
-      model: googleAI("gemini-2.5-flash-preview-04-17"),
+      model: googleAI("gemini-2.5-flash"),
       prompt: message,
       system:
         "You are InterviewGPT, an AI assistant specialized in helping users prepare for job interviews. Provide concise, helpful responses to questions about interview preparation, resume building, and career advice. Be supportive and professional.",

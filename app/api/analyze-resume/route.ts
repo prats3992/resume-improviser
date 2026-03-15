@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const googleAI = getGeminiModel()
 
     const { text } = await generateText({
-      model: googleAI("gemini-2.5-flash-preview-04-17"),
+      model: googleAI("gemini-2.5-flash"),
       prompt: `Analyze this resume data for a ${targetRole} position: ${resumeData}`,
       system: `
         You are a professional resume reviewer and career coach. Analyze the provided resume data for the specified role.
